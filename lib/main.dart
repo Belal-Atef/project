@@ -1,61 +1,76 @@
 import 'package:flutter/material.dart';
 import 'package:proximity_sensor/proximity_sensor.dart';
 
+void main() => runApp(App());
 
-void main() => runApp(MyApp());
 
-class MyApp extends StatelessWidget {
+
+class App extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Proximity Sensor Demo',
+      title: 'Task 6',
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        primarySwatch: Colors.grey,
       ),
-      home: MyHomePage(title: 'Proximity Sensor Demo'),
+      home: HomePage(title: 'Task 6'),
     );
   }
 }
 
 
-class MyHomePage extends StatefulWidget {
-  MyHomePage({ required this.title}) : super();
 
-  final String title;
+class HomePage extends StatefulWidget {
+  HomePage({required this.title}) : super();
+
+  String title;
 
   @override
-  _MyHomePageState createState() => _MyHomePageState();
+  _HomePageState createState() => _HomePageState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
-  bool _isNear = false;
+
+
+class _HomePageState extends State<HomePage> {
+  bool _isObjectNear = true;
 
   @override
   void initState() {
     super.initState();
     ProximitySensor.events.listen((event) {
       setState(() {
-        _isNear = event as bool;
+        _isObjectNear = event == 0; 
       });
     });
   }
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.title),
-      ),
-      body: Center(
-        child: Container(
-          width: 100,
-          height: 100,
-          decoration: BoxDecoration(
-            shape: BoxShape.circle,
-            color: _isNear ? Colors.green : Colors.red,
+Widget build(BuildContext context) {
+  return Scaffold(
+    appBar: AppBar(
+      title: Text('Task 6'),
+    ),
+    body: Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Container(
+            width: 168,
+            height: 168,
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              color: _isObjectNear ? Colors.red : Colors.green,
+            ),
           ),
-        ),
+          SizedBox(height: 16),
+          Text(
+            _isObjectNear ? 'Object is at a distance' : 'Object is nearby',
+            style: TextStyle(fontSize: 20),
+          ),
+        ],
       ),
-    );
-  }
+    ),
+  );
+}
+
 }
